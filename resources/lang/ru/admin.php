@@ -75,6 +75,7 @@ return [
         'whitelist_custom' => 'Whitelist (Custom)',
         'rate_limit_and_whitelist' => 'Rate Limit + Whitelist',
         'rate_limit_and_whitelist_custom' => 'Rate Limit + Whitelist (Custom)',
+        'whitelist_and_rate_limit_custom' => 'Whitelist + Rate Limit (Custom)',
         'restricted' => 'Restricted',
     ],
     
@@ -125,6 +126,7 @@ return [
         'whitelist_custom' => 'Whitelist Custom',
         'rl_plus_w' => 'RL + W',
         'rl_plus_w_custom' => 'RL + W Custom',
+        'w_plus_rl_custom' => 'W + RL Custom',
         'restricted' => 'Restricted',
         'default' => 'Default',
     ],
@@ -135,6 +137,20 @@ return [
         'cache_cleared' => 'Кеш API Limiter очищен!',
         'error' => 'Произошла ошибка при сохранении настроек.',
         'no_changes' => 'Изменения не были внесены.',
+    ],
+
+    // Validation messages
+    'validation' => [
+        'route_required' => 'Поле роута обязательно для заполнения',
+        'max_attempts_required' => 'Для кастомного лимита запросов необходимо указать количество запросов (от 1 до 10000)',
+        'per_minutes_required' => 'Для кастомного лимита запросов необходимо указать период в минутах (от 1 до 1440)',
+        'whitelist_ips_required' => 'Для кастомного whitelist необходимо указать IP адреса',
+        'invalid_ip' => 'Неверный IP адрес или CIDR: :ip',
+        'max_attempts_range' => 'Количество запросов должно быть от 1 до 10000',
+        'per_minutes_range' => 'Период должен быть от 1 до 1440 минут',
+        'route_invalid_format' => 'Роут содержит недопустимые символы',
+        'too_many_rules' => 'Максимум 100 правил разрешено',
+        'errors_found' => 'Найдены ошибки валидации',
     ],
     
     // Compatibility messages
@@ -185,6 +201,7 @@ return [
         'whitelist_custom' => 'Доступ только для IP из индивидуального whitelist этого роута.',
         'rate_limiting_whitelist' => 'Общие лимиты + общий whitelist проходит без ограничений.',
         'rate_limiting_whitelist_custom' => 'Индивидуальные лимиты + индивидуальный whitelist проходит без ограничений.',
+        'whitelist_rate_limiting_custom' => 'Только IP из whitelist допускаются, но с индивидуальными лимитами запросов.',
         'restricted' => 'Полный запрет доступа. Все запросы получают 403.',
     ],
     
@@ -216,6 +233,8 @@ return [
     
     // Logs page
     'logs' => [
+        'enabled' => 'Включено',
+        'disabled' => 'Выключено',
         'title' => 'Логи API Limiter',
         'description' => 'Просмотр логов API запросов, обработанных плагином API Limiter.',
         'no_logs' => 'Логи не найдены',

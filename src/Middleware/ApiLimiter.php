@@ -243,6 +243,31 @@ class ApiLimiter
                 );
                 break;
                 
+            case 'whitelist_rate_limit_custom':
+                // Only whitelisted IPs are allowed, but with rate limiting
+                if (!$isCustomWhitelisted) {
+                    if ($loggingEnabled) {
+                        \Log::channel('api-limiter')->info('API Request', [
+                            'ip' => $request->ip(),
+                            'method' => $request->method(),
+                            'route' => $currentRoute ?: 'unknown',
+                            'uri' => $request->getPathInfo(),
+                            'status' => 'blocked',
+                            'reason' => 'not_in_custom_whitelist'
+                        ]);
+                    }
+                    abort(403, 'Access Forbidden');
+                }
+                // Apply rate limiting to whitelisted IPs
+                $this->applyRateLimiting($request,
+                    $ruleData['max_attempts'] ?? LimiterSetting::getValue('max_attempts', 60),
+                    $ruleData['per_minutes'] ?? LimiterSetting::getValue('per_minutes', 1),
+                    $loggingEnabled,
+                    $currentRoute,
+                    'whitelisted_rate_limited'
+                );
+                break;
+                
             default:
                 $this->applyRateLimiting($request,
                     LimiterSetting::getValue('max_attempts', 60),

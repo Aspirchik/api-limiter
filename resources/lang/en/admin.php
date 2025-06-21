@@ -75,6 +75,7 @@ return [
         'whitelist_custom' => 'Whitelist (Custom)',
         'rate_limit_and_whitelist' => 'Rate Limit + Whitelist',
         'rate_limit_and_whitelist_custom' => 'Rate Limit + Whitelist (Custom)',
+        'whitelist_and_rate_limit_custom' => 'Whitelist + Rate Limit (Custom)',
         'restricted' => 'Restricted',
     ],
     
@@ -125,6 +126,7 @@ return [
         'whitelist_custom' => 'Whitelist Custom',
         'rl_plus_w' => 'RL + W',
         'rl_plus_w_custom' => 'RL + W Custom',
+        'w_plus_rl_custom' => 'W + RL Custom',
         'restricted' => 'Restricted',
         'default' => 'Default',
     ],
@@ -135,6 +137,20 @@ return [
         'cache_cleared' => 'API Limiter cache cleared!',
         'error' => 'An error occurred while saving settings.',
         'no_changes' => 'No changes were made.',
+    ],
+
+    // Validation messages
+    'validation' => [
+        'route_required' => 'Route field is required',
+        'max_attempts_required' => 'For custom rate limiting, you must specify the number of requests (1 to 10000)',
+        'per_minutes_required' => 'For custom rate limiting, you must specify the period in minutes (1 to 1440)',
+        'whitelist_ips_required' => 'For custom whitelist, you must specify IP addresses',
+        'invalid_ip' => 'Invalid IP address or CIDR: :ip',
+        'max_attempts_range' => 'Number of requests must be between 1 and 10000',
+        'per_minutes_range' => 'Period must be between 1 and 1440 minutes',
+        'route_invalid_format' => 'Route contains invalid characters',
+        'too_many_rules' => 'Maximum 100 rules allowed',
+        'errors_found' => 'Validation errors found',
     ],
     
     // Compatibility messages
@@ -185,6 +201,7 @@ return [
         'whitelist_custom' => 'Access only for IPs from individual whitelist of this route.',
         'rate_limiting_whitelist' => 'General limits + global whitelist passes without restrictions.',
         'rate_limiting_whitelist_custom' => 'Individual limits + individual whitelist passes without restrictions.',
+        'whitelist_rate_limiting_custom' => 'Only whitelisted IPs are allowed, but with individual rate limits.',
         'restricted' => 'Complete access ban. All requests get 403.',
     ],
     
@@ -216,6 +233,8 @@ return [
     
     // Logs page
     'logs' => [
+        'enabled' => 'Enabled',
+        'disabled' => 'Disabled',
         'title' => 'API Limiter Logs',
         'description' => 'View API request logs processed by the API Limiter plugin.',
         'no_logs' => 'No logs found',

@@ -36,8 +36,8 @@
                     <div class="col-md-3">
                         <label class="form-label">{{ trans('api-limiter::admin.logs.logging_enabled') }}:</label>
                         <select name="logging_enabled" class="form-control">
-                            <option value="1" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('logging_enabled', true) ? 'selected' : '' }}>✅ {{ trans('api-limiter::admin.enabled') }}</option>
-                            <option value="0" {{ !\Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('logging_enabled', true) ? 'selected' : '' }}>❌ {{ trans('api-limiter::admin.disabled') }}</option>
+                            <option value="1" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('logging_enabled', true) ? 'selected' : '' }}>✅ {{ trans('api-limiter::admin.logs.enabled') }}</option>
+                            <option value="0" {{ !\Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('logging_enabled', true) ? 'selected' : '' }}>❌ {{ trans('api-limiter::admin.logs.disabled') }}</option>
                         </select>
                     </div>
                     <div class="col-md-4">

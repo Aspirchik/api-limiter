@@ -135,22 +135,71 @@ class LimiterController extends Controller
      */
     public function update(Request $request)
     {
+
+
+        // Basic validation - all custom fields are optional
         $request->validate([
             // General settings
             'enabled' => 'nullable|string',
             'max_attempts' => 'required|integer|min:1|max:10000',
-            'per_minutes' => 'required|integer|min:1|max:60',
+            'per_minutes' => 'required|integer|min:1|max:1440',
             'limit_by' => 'required|string|in:ip,user',
-            'whitelist_ips' => 'nullable|string',
-            'default_rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom',
-            // Route rules
-            'custom_rules' => 'nullable|array',
-            'custom_rules.*.route' => 'required|string',
-            'custom_rules.*.rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom',
+            'whitelist_ips' => 'nullable|string|max:1000',
+            'default_rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom,whitelist_rate_limit_custom',
+            // Route rules - all fields optional for now
+            'custom_rules' => 'nullable|array|max:100',
+            'custom_rules.*.route' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9\/_\*\.\-]+$/',
+            'custom_rules.*.rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom,whitelist_rate_limit_custom',
             'custom_rules.*.max_attempts' => 'nullable|integer|min:1|max:10000',
-            'custom_rules.*.per_minutes' => 'nullable|integer|min:1|max:60',
-            'custom_rules.*.whitelist_ips' => 'nullable|string',
+            'custom_rules.*.per_minutes' => 'nullable|integer|min:1|max:1440',
+            'custom_rules.*.whitelist_ips' => 'nullable|string|max:2000',
         ]);
+
+        // Additional validation for custom rules
+        $customRules = $request->input('custom_rules', []);
+        $errors = [];
+        
+        foreach ($customRules as $index => $customRule) {
+            $ruleType = $customRule['rule'] ?? '';
+            
+            // Check required fields for rate limiting custom rules
+            if (in_array($ruleType, ['rate_limit_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
+                if (!isset($customRule['max_attempts']) || trim($customRule['max_attempts']) === '') {
+                    $errors["custom_rules.{$index}.max_attempts"] = trans('api-limiter::admin.validation.max_attempts_required');
+                }
+                if (!isset($customRule['per_minutes']) || trim($customRule['per_minutes']) === '') {
+                    $errors["custom_rules.{$index}.per_minutes"] = trans('api-limiter::admin.validation.per_minutes_required');
+                }
+            }
+            
+            // Check required fields for whitelist custom rules
+            if (in_array($ruleType, ['whitelist_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
+                if (!isset($customRule['whitelist_ips']) || trim($customRule['whitelist_ips']) === '') {
+                    $errors["custom_rules.{$index}.whitelist_ips"] = trans('api-limiter::admin.validation.whitelist_ips_required');
+                } else {
+                    // IP address validation
+                    $ips = array_map('trim', explode(',', $customRule['whitelist_ips']));
+                    foreach ($ips as $ip) {
+                        if (!empty($ip)) {
+                            // Check for valid IP or CIDR
+                            if (!filter_var($ip, FILTER_VALIDATE_IP) && 
+                                !preg_match('/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}$/', $ip) && 
+                                !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                                $errors["custom_rules.{$index}.whitelist_ips"] = trans('api-limiter::admin.validation.invalid_ip', ['ip' => $ip]);
+                                break; // Stop checking other IPs for this field
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // If there are validation errors, return with errors
+        if (!empty($errors)) {
+            return redirect()->back()
+                ->withErrors($errors)
+                ->withInput();
+        }
 
         // Convert checkbox value to boolean
         $enabled = $request->has('enabled') && $request->input('enabled') === 'on';
@@ -176,31 +225,37 @@ class LimiterController extends Controller
         
         foreach ($customRules as $customRule) {
             if (!empty($customRule['route']) && !empty($customRule['rule'])) {
-                $ruleData = [
-                    'type' => $customRule['rule']
-                ];
+                $ruleType = $customRule['rule'];
                 
-                // Add parameters for custom rules
-                if (in_array($customRule['rule'], ['rate_limit_custom', 'rate_limit_whitelist_custom'])) {
-                    if (!empty($customRule['max_attempts'])) {
-                        $ruleData['max_attempts'] = (int) $customRule['max_attempts'];
+                // For custom rules, always create array with parameters
+                if (str_contains($ruleType, '_custom')) {
+                    $ruleData = [
+                        'type' => $ruleType
+                    ];
+                    
+                    // Add parameters for rate limiting custom rules
+                    if (in_array($ruleType, ['rate_limit_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
+                        // Only add if values are provided and valid
+                        if (isset($customRule['max_attempts']) && is_numeric($customRule['max_attempts'])) {
+                            $ruleData['max_attempts'] = (int) $customRule['max_attempts'];
+                        }
+                        if (isset($customRule['per_minutes']) && is_numeric($customRule['per_minutes'])) {
+                            $ruleData['per_minutes'] = (int) $customRule['per_minutes'];
+                        }
                     }
-                    if (!empty($customRule['per_minutes'])) {
-                        $ruleData['per_minutes'] = (int) $customRule['per_minutes'];
+                    
+                    // Add parameters for whitelist custom rules
+                    if (in_array($ruleType, ['whitelist_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
+                        // Only add if value is provided and not empty
+                        if (isset($customRule['whitelist_ips']) && trim($customRule['whitelist_ips']) !== '') {
+                            $ruleData['whitelist_ips'] = trim($customRule['whitelist_ips']);
+                        }
                     }
-                }
-                
-                if (in_array($customRule['rule'], ['whitelist_custom', 'rate_limit_whitelist_custom'])) {
-                    if (!empty($customRule['whitelist_ips'])) {
-                        $ruleData['whitelist_ips'] = $customRule['whitelist_ips'];
-                    }
-                }
-                
-                // If no additional parameters, save just the type
-                if (count($ruleData) === 1) {
-                    $rules[$customRule['route']] = $ruleData['type'];
-                } else {
+                    
                     $rules[$customRule['route']] = $ruleData;
+                } else {
+                    // For regular rules, save only the type
+                    $rules[$customRule['route']] = $ruleType;
                 }
             }
         }
@@ -546,6 +601,14 @@ class LimiterController extends Controller
                     'text' => trans('api-limiter::admin.rule_display.rl_plus_w_custom'),
                     'class' => 'text-primary',
                     'type' => 'rate_limit_whitelist_custom'
+                ];
+                
+            case 'whitelist_rate_limit_custom':
+                return [
+                    'icon' => '🔒🚦',
+                    'text' => trans('api-limiter::admin.rule_display.w_plus_rl_custom'),
+                    'class' => 'text-info',
+                    'type' => 'whitelist_rate_limit_custom'
                 ];
                 
             case 'restricted':
