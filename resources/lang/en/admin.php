@@ -51,6 +51,19 @@ return [
         'custom_settings' => 'Custom Settings',
         'select_route' => 'Select API Route',
         'no_routes' => 'No API routes found',
+        'api_route' => 'API Route',
+        'rule' => 'Rule',
+        'max_attempts' => 'Max Attempts',
+        'per_minutes' => 'Per Minutes',
+        'whitelist_ips' => 'Whitelist IP addresses',
+        'no_restrictions' => '🟢 No Restrictions',
+        'rate_limit' => '🟡 Rate Limiting',
+        'rate_limit_custom' => '🟠 Custom Rate Limiting',
+        'whitelist_only' => '🔵 Whitelist Only',
+        'whitelist_custom' => '🟣 Custom Whitelist',
+        'rate_limit_whitelist' => '🟤 Rate Limiting + Whitelist',
+        'rate_limit_whitelist_custom' => '🟤 Custom Combo',
+        'restricted' => '🔴 Restricted',
     ],
     
     // Rule types
@@ -119,6 +132,7 @@ return [
     // Messages
     'messages' => [
         'settings_saved' => 'Settings and rules saved successfully!',
+        'cache_cleared' => 'API Limiter cache cleared!',
         'error' => 'An error occurred while saving settings.',
         'no_changes' => 'No changes were made.',
     ],

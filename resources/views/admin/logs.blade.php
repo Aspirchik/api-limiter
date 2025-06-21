@@ -29,7 +29,7 @@
         <div class="card-body">
             <p>{{ trans('api-limiter::admin.logs.description') }}</p>
             
-            <!-- Настройки логирования -->
+            <!-- Logging settings -->
             <div class="alert alert-info">
                 <form method="POST" action="{{ route('api-limiter.admin.settings') }}" class="row align-items-end">
                     @csrf
@@ -65,7 +65,7 @@
                 </form>
             </div>
             
-            <!-- Фильтры -->
+            <!-- Filters -->
             <form method="GET" class="mb-4">
                 <div class="row">
                     <div class="col-md-3">
@@ -192,7 +192,7 @@
                     </table>
                 </div>
                 
-                <!-- Пагинация -->
+                <!-- Pagination -->
                 @if($totalPages > 1)
                     <nav aria-label="Log pagination">
                         <ul class="pagination justify-content-center">

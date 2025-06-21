@@ -60,7 +60,7 @@ class LimiterController extends Controller
         RateLimiter::clear('api_rate_limit:*');
 
         return redirect()->route('api-limiter.admin.settings')
-            ->with('success', 'Кеш API Limiter очищен!');
+            ->with('success', trans('api-limiter::admin.messages.cache_cleared'));
     }
 
     /**
@@ -213,7 +213,7 @@ class LimiterController extends Controller
 
         return redirect()
             ->route('api-limiter.admin.settings')
-            ->with('success', 'Настройки и правила успешно сохранены!');
+            ->with('success', trans('api-limiter::admin.messages.settings_saved'));
     }
 
     /**
@@ -462,17 +462,17 @@ class LimiterController extends Controller
             }
         } else {
             // Public API routes
-            if (str_contains($uri, '/auth/')) {
+        if (str_contains($uri, '/auth/')) {
                 return 'Authentication and authorization';
-            } elseif (str_contains($uri, '/skin')) {
+        } elseif (str_contains($uri, '/skin')) {
                 return 'Skins and capes management';
-            } elseif (str_contains($uri, '/avatar')) {
+        } elseif (str_contains($uri, '/avatar')) {
                 return 'Avatar generation';
-            } elseif (str_contains($uri, '/money')) {
+        } elseif (str_contains($uri, '/money')) {
                 return 'User currency management';
-            } elseif (str_contains($uri, '/user')) {
+        } elseif (str_contains($uri, '/user')) {
                 return 'User management';
-            } elseif (str_contains($uri, '/server')) {
+        } elseif (str_contains($uri, '/server')) {
                 return 'Server management';
             }
         }

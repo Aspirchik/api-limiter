@@ -25,7 +25,7 @@
             <form method="POST" action="{{ route('api-limiter.admin.update') }}">
                 @csrf
 
-                <!-- Основные настройки -->
+                <!-- Main settings -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">⚙️ {{ trans('api-limiter::admin.general.title') }}</h5>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                <!-- Специальные правила для роутов -->
+                <!-- Special route rules -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">🎯 {{ trans('api-limiter::admin.rules.title') }}</h5>
@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Настройки для Rate Limiting Custom -->
+                                    <!-- Rate Limiting Custom settings -->
                                     <div class="rule-options mt-3" data-rule="rate_limit_custom" style="display: {{ $rule === 'rate_limit_custom' ? 'block' : 'none' }}">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -188,7 +188,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Настройки для Whitelist Custom -->
+                                    <!-- Whitelist Custom settings -->
                                     <div class="rule-options mt-3" data-rule="whitelist_custom" style="display: {{ $rule === 'whitelist_custom' ? 'block' : 'none' }}">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -199,7 +199,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Настройки для Rate Limiting + Whitelist Custom -->
+                                    <!-- Rate Limiting + Whitelist Custom settings -->
                                     <div class="rule-options mt-3" data-rule="rate_limit_whitelist_custom" style="display: {{ $rule === 'rate_limit_whitelist_custom' ? 'block' : 'none' }}">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -243,7 +243,7 @@
                     </div>
                 </div>
 
-                <!-- Типы правил -->
+                <!-- Rule types -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">ℹ️ {{ trans('api-limiter::admin.custom_fields.rule_descriptions') }}</h5>
@@ -302,7 +302,7 @@
         </div>
     </div>
 
-    <!-- Modal для выбора API роутов -->
+    <!-- Modal for API route selection -->
     <div class="modal fade" id="routeSelectorModal" tabindex="-1" aria-labelledby="routeSelectorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -365,74 +365,74 @@
                 <div class="custom-rule mb-4 p-3 border rounded">
                     <div class="row align-items-start">
                         <div class="col-md-4">
-                            <label class="form-label">API роут</label>
+                            <label class="form-label">{{ trans('api-limiter::admin.rules.api_route') }}</label>
                             <input type="text" class="form-control" name="custom_rules[${ruleIndex}][route]" 
                                    value="${route}" placeholder="api/auth/*, auth.verify, api/posts" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Правило</label>
+                            <label class="form-label">{{ trans('api-limiter::admin.rules.rule') }}</label>
                             <select class="form-control rule-selector" name="custom_rules[${ruleIndex}][rule]" 
                                     onchange="toggleRuleOptions(this)" required>
-                                <option value="no_restrictions" ${rule === 'no_restrictions' ? 'selected' : ''}>✅ No Restrictions</option>
-                                <option value="rate_limit" ${rule === 'rate_limit' ? 'selected' : ''}>🚦 Rate Limiting</option>
-                                <option value="rate_limit_custom" ${rule === 'rate_limit_custom' ? 'selected' : ''}>🚦 Rate Limiting Custom</option>
-                                <option value="whitelist_only" ${rule === 'whitelist_only' ? 'selected' : ''}>🔒 Whitelist Only</option>
-                                <option value="whitelist_custom" ${rule === 'whitelist_custom' ? 'selected' : ''}>🔒 Whitelist Custom</option>
-                                                                                <option value="rate_limit_whitelist" ${rule === 'rate_limit_whitelist' ? 'selected' : ''}>🚦🔒 Rate Limiting + Whitelist</option>
-                                                <option value="rate_limit_whitelist_custom" ${rule === 'rate_limit_whitelist_custom' ? 'selected' : ''}>🚦🔒 Rate Limiting + Whitelist Custom</option>
-                                                <option value="restricted" ${rule === 'restricted' ? 'selected' : ''}>🚫 Restricted</option>
-                                            </select>
+                                <option value="no_restrictions" ${rule === 'no_restrictions' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.no_restrictions') }}</option>
+                                <option value="rate_limit" ${rule === 'rate_limit' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.rate_limit') }}</option>
+                                <option value="rate_limit_custom" ${rule === 'rate_limit_custom' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.rate_limit_custom') }}</option>
+                                <option value="whitelist_only" ${rule === 'whitelist_only' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.whitelist_only') }}</option>
+                                <option value="whitelist_custom" ${rule === 'whitelist_custom' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.whitelist_custom') }}</option>
+                                <option value="rate_limit_whitelist" ${rule === 'rate_limit_whitelist' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.rate_limit_whitelist') }}</option>
+                                <option value="rate_limit_whitelist_custom" ${rule === 'rate_limit_whitelist_custom' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.rate_limit_whitelist_custom') }}</option>
+                                <option value="restricted" ${rule === 'restricted' ? 'selected' : ''}>{{ trans('api-limiter::admin.rules.restricted') }}</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
                             <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRule(this)">
-                                🗑️ Удалить
+                                🗑️ {{ trans('api-limiter::admin.buttons.remove') }}
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Настройки для Rate Limiting Custom -->
+                    <!-- Rate Limiting Custom settings -->
                     <div class="rule-options mt-3" data-rule="rate_limit_custom" style="display: none">
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="form-label">Количество запросов</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.max_attempts') }}</label>
                                 <input type="number" class="form-control" name="custom_rules[${ruleIndex}][max_attempts]" 
                                        min="1" max="10000" placeholder="10">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Период (минуты)</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.per_minutes') }}</label>
                                 <input type="number" class="form-control" name="custom_rules[${ruleIndex}][per_minutes]" 
                                        min="1" max="60" placeholder="1">
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Настройки для Whitelist Custom -->
+                    <!-- Whitelist Custom settings -->
                     <div class="rule-options mt-3" data-rule="whitelist_custom" style="display: none">
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="form-label">Whitelist IP адресов</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.whitelist_ips') }}</label>
                                 <textarea class="form-control" name="custom_rules[${ruleIndex}][whitelist_ips]" 
                                           rows="2" placeholder="127.0.0.1, 192.168.1.0/24"></textarea>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Настройки для Rate Limiting + Whitelist Custom -->
+                    <!-- Rate Limiting + Whitelist Custom settings -->
                     <div class="rule-options mt-3" data-rule="rate_limit_whitelist_custom" style="display: none">
                         <div class="row">
                             <div class="col-md-4">
-                                <label class="form-label">Количество запросов</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.max_attempts') }}</label>
                                 <input type="number" class="form-control" name="custom_rules[${ruleIndex}][max_attempts]" 
                                        min="1" max="10000" placeholder="10">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Период (минуты)</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.per_minutes') }}</label>
                                 <input type="number" class="form-control" name="custom_rules[${ruleIndex}][per_minutes]" 
                                        min="1" max="60" placeholder="1">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Whitelist IP</label>
+                                <label class="form-label">{{ trans('api-limiter::admin.rules.whitelist_ips') }}</label>
                                 <textarea class="form-control" name="custom_rules[${ruleIndex}][whitelist_ips]" 
                                           rows="1" placeholder="127.0.0.1"></textarea>
                             </div>
@@ -448,13 +448,13 @@
             const ruleContainer = selectElement.closest('.custom-rule');
             const selectedRule = selectElement.value;
             
-            // Скрыть все опции
+            // Hide all options
             const allOptions = ruleContainer.querySelectorAll('.rule-options');
             allOptions.forEach(option => {
                 option.style.display = 'none';
             });
             
-            // Показать нужные опции
+            // Show required options
             if (selectedRule === 'rate_limit_custom') {
                 const options = ruleContainer.querySelector('[data-rule="rate_limit_custom"]');
                 if (options) options.style.display = 'block';
@@ -482,9 +482,9 @@
             modal.hide();
         }
 
-        // Инициализация при загрузке страницы
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Настроить отображение опций для существующих правил
+            // Setup option display for existing rules
             document.querySelectorAll('.rule-selector').forEach(function(select) {
                 toggleRuleOptions(select);
             });

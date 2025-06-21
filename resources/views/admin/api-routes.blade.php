@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <!-- Статистика по источникам -->
+    <!-- Source statistics -->
     <div class="row mb-4">
         @php
             $sourceStats = [];
@@ -44,7 +44,7 @@
         @endforeach
     </div>
 
-    <!-- Фильтры -->
+    <!-- Filters -->
     <div class="card mb-4">
         <div class="card-body">
             <div class="row">
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <!-- Таблица роутов -->
+    <!-- Routes table -->
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -177,7 +177,7 @@
         </div>
     </div>
 
-    <!-- Детальная информация о middleware -->
+    <!-- Detailed middleware information -->
     <div class="card mt-4">
         <div class="card-header">
             <h5 class="card-title">ℹ️ {{ trans('api-limiter::admin.coverage.title') }}</h5>
