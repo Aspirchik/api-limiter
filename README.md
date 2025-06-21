@@ -160,7 +160,7 @@ Content-Type: application/json
 
 - **Включить логирование** - полное отключение записи логов
 - **Автоочистка** - автоматическое удаление старых логов
-- **14 периодов** - от 15 минут до 1 года
+- **12 периодов** - 1 часа до 1 года
 
 ## 🔄 Режимы ограничения
 
@@ -260,7 +260,7 @@ Content-Type: application/json
 
 MIT License - свободное использование и модификация.
 
-Плагин был сгенерирован с помощью модели claude-4-sonnet в Cursor IDE примерно за 100-150 запросов
+Плагин был сгенерирован с помощью модели claude-4-sonnet в Cursor IDE примерно за 200 запросов
 
 ---
 
@@ -420,7 +420,7 @@ Compact single-line format with milliseconds in `storage/logs/api-limiter-YYYY-M
 
 - **Enable Logging** - completely disable log recording
 - **Auto Cleanup** - automatic deletion of old logs
-- **14 Periods** - from 15 minutes to 1 year
+- **14 Periods** - from 1 hour to 1 year
 
 ## 🔄 Limiting Modes
 
@@ -520,7 +520,7 @@ If you encounter issues:
 
 MIT License - free use and modification.
 
-The plugin was generated using the claude-4-sonnet model in the Cursor IDE in about 100-150 requests
+The plugin was generated using the claude-4-sonnet model in the Cursor IDE in about 200 requests
 
 ---
 
