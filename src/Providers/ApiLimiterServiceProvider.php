@@ -4,8 +4,10 @@ namespace Azuriom\Plugin\ApiLimiter\Providers;
 
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\Permission;
+use Azuriom\Plugin\ApiLimiter\Console\Commands\CleanupLogsCommand;
 use Azuriom\Plugin\ApiLimiter\Middleware\ApiLimiter;
 use Azuriom\Plugin\ApiLimiter\Models\LimiterSetting;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 
 class ApiLimiterServiceProvider extends BasePluginServiceProvider
@@ -17,6 +19,11 @@ class ApiLimiterServiceProvider extends BasePluginServiceProvider
     {
         // Register rate limiter override in register method (executes earlier)
         $this->overrideBuiltinApiThrottling();
+        
+        // Register console commands
+        $this->commands([
+            CleanupLogsCommand::class,
+        ]);
     }
 
     /**
@@ -42,6 +49,9 @@ class ApiLimiterServiceProvider extends BasePluginServiceProvider
 
         // Initialize plugin settings with default values
         $this->initializePluginSettings();
+        
+        // Schedule log cleanup
+        $this->scheduleLogCleanup();
     }
 
     /**
@@ -293,5 +303,27 @@ class ApiLimiterServiceProvider extends BasePluginServiceProvider
                 ]);
             }
         });
+    }
+    
+    /**
+     * Schedule automatic log cleanup.
+     */
+    protected function scheduleLogCleanup(): void
+    {
+        try {
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                
+                // Run cleanup every hour
+                $schedule->command('api-limiter:cleanup-logs')
+                    ->hourly()
+                    ->withoutOverlapping()
+                    ->runInBackground();
+            });
+        } catch (\Exception $e) {
+            \Log::error('ApiLimiter: Failed to schedule log cleanup', [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 } 

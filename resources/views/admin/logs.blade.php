@@ -43,8 +43,6 @@
                     <div class="col-md-4">
                         <label class="form-label">{{ trans('api-limiter::admin.logs.auto_cleanup') }}:</label>
                         <select name="auto_cleanup_logs" class="form-control">
-                            <option value="15_min" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '15_min' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.15_min') }}</option>
-                            <option value="30_min" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '30_min' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.30_min') }}</option>
                             <option value="1_hour" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '1_hour' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.1_hour') }}</option>
                             <option value="3_hours" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '3_hours' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.3_hours') }}</option>
                             <option value="6_hours" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '6_hours' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.6_hours') }}</option>

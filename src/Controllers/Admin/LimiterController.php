@@ -148,7 +148,7 @@ class LimiterController extends Controller
             'default_rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom,whitelist_rate_limit_custom',
             // Logging settings
             'logging_enabled' => 'nullable|string|in:0,1',
-            'auto_cleanup_logs' => 'nullable|string|in:15_min,30_min,1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
+            'auto_cleanup_logs' => 'nullable|string|in:1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
             // Route rules - all fields optional for now
             'custom_rules' => 'nullable|array|max:100',
             'custom_rules.*.route' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9\/_\*\.\-]+$/',

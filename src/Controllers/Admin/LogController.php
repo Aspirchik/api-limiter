@@ -167,7 +167,7 @@ class LogController extends Controller
         // Validate input
         $request->validate([
             'logging_enabled' => 'required|string|in:0,1',
-            'auto_cleanup_logs' => 'required|string|in:15_min,30_min,1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
+            'auto_cleanup_logs' => 'required|string|in:1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
         ]);
         
         // Save logging settings
