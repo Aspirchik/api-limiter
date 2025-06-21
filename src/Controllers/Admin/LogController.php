@@ -3,6 +3,7 @@
 namespace Azuriom\Plugin\ApiLimiter\Controllers\Admin;
 
 use Azuriom\Http\Controllers\Controller;
+use Azuriom\Plugin\ApiLimiter\Models\LimiterSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -148,6 +149,39 @@ class LogController extends Controller
         $filename = 'api-limiter-' . date('Y-m-d-H-i-s') . '.log';
         
         return response()->download($latestLogFile, $filename);
+    }
+    
+    /**
+     * Update logging settings.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateSettings(Request $request)
+    {
+        // Additional permission check
+        if (!auth()->user()->can('api-limiter.manage')) {
+            abort(403, 'Access denied');
+        }
+        
+        // Validate input
+        $request->validate([
+            'logging_enabled' => 'required|string|in:0,1',
+            'auto_cleanup_logs' => 'required|string|in:15_min,30_min,1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
+        ]);
+        
+        // Save logging settings
+        LimiterSetting::setValues([
+            'logging_enabled' => $request->input('logging_enabled') === '1',
+            'auto_cleanup_logs' => $request->input('auto_cleanup_logs', '1_week'),
+        ]);
+        
+        // Clear cache
+        \Artisan::call('cache:clear');
+        \Artisan::call('config:clear');
+        
+        return redirect()->route('api-limiter.admin.logs')
+            ->with('success', trans('api-limiter::admin.messages.settings_saved'));
     }
     
     /**

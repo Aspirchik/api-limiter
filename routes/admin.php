@@ -21,6 +21,7 @@ Route::get('/api-routes', [LimiterController::class, 'apiRoutes'])->name('api-ro
 Route::post('/clear', [LimiterController::class, 'clear'])->name('clear');
 
 // Logs routes
-Route::get('/logs', [LogController::class, 'index'])->name('logs');
-Route::post('/logs/clear', [LogController::class, 'clear'])->name('logs.clear');
-Route::get('/logs/download', [LogController::class, 'download'])->name('logs.download'); 
+    Route::get('/logs', [LogController::class, 'index'])->name('logs');
+    Route::post('/logs/clear', [LogController::class, 'clear'])->name('logs.clear');
+    Route::get('/logs/download', [LogController::class, 'download'])->name('logs.download');
+    Route::post('/logs/settings', [LogController::class, 'updateSettings'])->name('logs.settings'); 

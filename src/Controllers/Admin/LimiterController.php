@@ -146,6 +146,9 @@ class LimiterController extends Controller
             'limit_by' => 'required|string|in:ip,user',
             'whitelist_ips' => 'nullable|string|max:1000',
             'default_rule' => 'required|string|in:no_restrictions,rate_limit,whitelist_only,restricted,rate_limit_custom,whitelist_custom,rate_limit_whitelist,rate_limit_whitelist_custom,whitelist_rate_limit_custom',
+            // Logging settings
+            'logging_enabled' => 'nullable|string|in:0,1',
+            'auto_cleanup_logs' => 'nullable|string|in:15_min,30_min,1_hour,3_hours,6_hours,12_hours,1_day,3_days,1_week,2_weeks,1_month,3_months,6_months,1_year',
             // Route rules - all fields optional for now
             'custom_rules' => 'nullable|array|max:100',
             'custom_rules.*.route' => 'required|string|min:1|max:255|regex:/^[a-zA-Z0-9\/_\*\.\-]+$/',
@@ -204,15 +207,26 @@ class LimiterController extends Controller
         // Convert checkbox value to boolean
         $enabled = $request->has('enabled') && $request->input('enabled') === 'on';
         
-        // Save general settings
-        LimiterSetting::setValues([
+        // Prepare settings array
+        $settings = [
             'enabled' => $enabled,
             'max_attempts' => (int) $request->input('max_attempts'),
             'per_minutes' => (int) $request->input('per_minutes'),
             'limit_by' => $request->input('limit_by'),
             'whitelist_ips' => $request->input('whitelist_ips', ''),
             'default_rule' => $request->input('default_rule', 'rate_limit'),
-        ]);
+        ];
+        
+        // Add logging settings if provided
+        if ($request->has('logging_enabled')) {
+            $settings['logging_enabled'] = $request->input('logging_enabled') === '1';
+        }
+        if ($request->has('auto_cleanup_logs')) {
+            $settings['auto_cleanup_logs'] = $request->input('auto_cleanup_logs', '1_week');
+        }
+        
+        // Save all settings
+        LimiterSetting::setValues($settings);
         
         // If enabling plugin - remove error disable flag
         if ($enabled) {
