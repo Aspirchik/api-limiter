@@ -21,7 +21,7 @@
 ### 📊 **Мониторинг и логирование:**
 - ✅ **Детальное логирование** - полная история API запросов
 - ✅ **Веб-интерфейс логов** - просмотр, фильтрация и поиск в админке
-- ✅ **Автоочистка логов** - 14 периодов от 15 минут до 1 года
+- ✅ **Автоочистка логов** - 12 периодов от 1 часа до 1 года
 - ✅ **Статистика покрытия** - анализ защищенности API роутов
 
 ### 🛡️ **Безопасность и надежность:**
@@ -49,7 +49,7 @@
 - **Ограничивать по** - выбор между IP адресом или пользователем
 - **Разрешенные IP адреса** - whitelist для обхода ограничений
 - **Включить логирование** - запись всех API запросов в логи
-- **Автоочистка логов** - период хранения логов (15 мин - 1 год)
+- **Автоочистка логов** - период хранения логов (1 часа - 1 год)
 
 ### 📋 Управление роутами:
 
@@ -281,7 +281,7 @@ Powerful and flexible API rate limiting plugin for Azuriom CMS with advanced con
 ### 📊 **Monitoring and Logging:**
 - ✅ **Detailed Logging** - complete history of API requests
 - ✅ **Web Log Interface** - view, filter and search in admin panel
-- ✅ **Auto Log Cleanup** - 14 periods from 15 minutes to 1 year
+- ✅ **Auto Log Cleanup** - 14 periods from 1 hour to 1 year
 - ✅ **Coverage Statistics** - analysis of API route protection
 
 ### 🛡️ **Security and Reliability:**
@@ -309,7 +309,7 @@ After installation, go to admin panel:
 - **Limit By** - choice between IP address or user
 - **Whitelisted IPs** - whitelist for bypassing limitations
 - **Enable Logging** - record all API requests to logs
-- **Auto Log Cleanup** - log retention period (15 min - 1 year)
+- **Auto Log Cleanup** - log retention period (1 hour - 1 year)
 
 ### 📋 Route Management:
 
