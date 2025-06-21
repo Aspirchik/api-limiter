@@ -1,6 +1,6 @@
 # 🛡️ API Limiter Plugin for Azuriom
 
-**[English version](#english-version) | [Русская версия](#русская-версия)**
+**[English version](#-english-version) | [Русская версия](#-русская-версия)**
 
 ---
 
