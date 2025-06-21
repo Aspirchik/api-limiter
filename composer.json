@@ -1,0 +1,14 @@
+{
+    "name": "azuriom/api-limiter",
+    "description": "API Limiter plugin for Azuriom",
+    "type": "azuriom-plugin",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Azuriom\\Plugin\\ApiLimiter\\": "src/"
+        }
+    }
+} 
