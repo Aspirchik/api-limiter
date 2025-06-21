@@ -78,13 +78,14 @@ Whitelist: 127.0.0.1, ::1
 
 ### 📋 Доступные правила:
 
-1. **🟢 Без ограничений** (`no_restrictions`) - полный доступ без лимитов
-2. **🟡 Ограничение запросов** (`rate_limit`) - стандартный лимит из глобальных настроек  
-3. **🟠 Пользовательское ограничение** (`rate_limit_custom`) - индивидуальный лимит для роута
-4. **🔵 Только whitelist** (`whitelist_only`) - доступ только для общего whitelist
-5. **🟣 Пользовательский whitelist** (`whitelist_custom`) - доступ только для кастомного whitelist
-6. **🟤 Пользовательское комбо** (`rate_limit_whitelist_custom`) - индивидуальные лимит + whitelist
-7. **🔴 Полный запрет** (`restricted`) - блокировка всех запросов
+1. **✅ No Restrictions** (`no_restrictions`) - полный доступ без лимитов
+2. **🚦 Rate Limiting** (`rate_limit`) - стандартный лимит из глобальных настроек  
+3. **🚦 Rate Limiting (Custom)** (`rate_limit_custom`) - индивидуальный лимит для роута
+4. **🔒 Whitelist Only** (`whitelist_only`) - доступ только для общего whitelist
+5. **🔒 Whitelist (Custom)** (`whitelist_custom`) - доступ только для кастомного whitelist
+6. **🚦🔒 Rate Limit + Whitelist** (`rate_limit_and_whitelist_custom`) - Индивидуальные лимиты + индивидуальный whitelist проходит без ограничений.
+7. **🚦🔒 Whitelist + Rate Limit (Custom)** (`whitelist_and_rate_limit_custom`) - Только IP из whitelist допускаются, но с индивидуальными лимитами запросов.
+8. **🚫 Restricted** (`restricted`) - Полный запрет доступа. Все запросы получают 403.
 
 ### 🔧 Конфигурация Whitelist
 
@@ -337,13 +338,14 @@ Auto Cleanup: 2 weeks
 
 ### 📋 Available Rules:
 
-1. **🟢 No Restrictions** (`no_restrictions`) - full access without limits
-2. **🟡 Rate Limiting** (`rate_limit`) - standard limit from global settings
-3. **🟠 Custom Rate Limiting** (`rate_limit_custom`) - individual limit for route
-4. **🔵 Whitelist Only** (`whitelist_only`) - access only for general whitelist
-5. **🟣 Custom Whitelist** (`whitelist_custom`) - access only for custom whitelist
-6. **🟤 Custom Combo** (`rate_limit_whitelist_custom`) - individual limit + whitelist
-7. **🔴 Restricted** (`restricted`) - block all requests
+1. **✅ No Restrictions** (`no_restrictions`) - full access without limits
+2. **🚦 Rate Limiting** (`rate_limit`) - standard limit from global settings
+3. **🚦 Rate Limiting (Custom)** (`rate_limit_custom`) - individual limit for route
+4. **🔒 Whitelist Only** (`whitelist_only`) - access only for general whitelist
+5. **🔒 Whitelist (Custom)** (`whitelist_custom`) - access only for custom whitelist
+6. **🚦🔒 Rate Limit + Whitelist** (`rate_limit_and_whitelist_custom`) - Individual limits + individual whitelist passes without restrictions.
+7. **🚦🔒 Whitelist + Rate Limit (Custom)** (`whitelist_and_rate_limit_custom`) - Only whitelisted IPs are allowed, but with individual rate limits.
+8. **🚫 Restricted** (`restricted`) - block all requests
 
 ### 🔧 Whitelist Configuration
 
