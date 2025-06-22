@@ -2,6 +2,10 @@
 
 @section('title', trans('api-limiter::admin.title') . ' - ' . trans('api-limiter::admin.settings'))
 
+@push('styles')
+    <link href="{{ plugin_asset('api-limiter', 'css/admin.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -358,7 +362,7 @@
                                     <small class="text-muted d-block">{{ trans('api-limiter::admin.rule_descriptions.rate_limiting_whitelist') }}</small>
                                 </div>
                                 <div class="p-2 border rounded mb-2">
-                                    <span class="badge" style="background-color: #6f42c1; color: white;">🚦🔒 {{ trans('api-limiter::admin.rule_types.rate_limit_and_whitelist_custom') }}</span>
+                                    <span class="badge badge-theme-compatible">🚦🔒 {{ trans('api-limiter::admin.rule_types.rate_limit_and_whitelist_custom') }}</span>
                                     <small class="text-muted d-block">{{ trans('api-limiter::admin.rule_descriptions.rate_limiting_whitelist_custom') }}</small>
                                 </div>
                                 <div class="p-2 border rounded mb-2">
@@ -410,7 +414,7 @@
                                     <tr>
                                         <td>
                                             @foreach(explode('|', $route['methods']) as $method)
-                                                <span class="badge badge-{{ $method === 'GET' ? 'info' : ($method === 'POST' ? 'warning' : 'secondary') }}">{{ $method }}</span>
+                                                <span class="badge bg-{{ $method === 'GET' ? 'info' : ($method === 'POST' ? 'warning' : 'secondary') }}">{{ $method }}</span>
                                             @endforeach
                                         </td>
                                         <td>
@@ -420,7 +424,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge badge-{{ $route['source']['type'] === 'core' ? 'primary' : 'info' }}">
+                                            <span class="badge bg-{{ $route['source']['type'] === 'core' ? 'primary' : 'info' }}">
                                                 {{ $route['source']['display'] }}
                                             </span>
                                         </td>

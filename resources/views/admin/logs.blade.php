@@ -2,8 +2,12 @@
 
 @section('title', trans('api-limiter::admin.logs.title'))
 
+@push('styles')
+    <link href="{{ plugin_asset('api-limiter', 'css/admin.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
-    <div class="card shadow mb-4">
+    <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">📋 {{ trans('api-limiter::admin.logs.title') }}</h5>
             <div>
@@ -166,19 +170,19 @@
                                         <small class="text-muted">{{ $log['date'] }}</small>
                                     </td>
                                     <td>
-                                        @if($log['status'] === 'allowed')
-                                            <span class="badge badge-success">✅ {{ trans('api-limiter::admin.logs.allowed') }}</span>
-                                        @elseif($log['status'] === 'blocked')
-                                            <span class="badge badge-danger">❌ {{ trans('api-limiter::admin.logs.blocked') }}</span>
-                                        @else
-                                            <span class="badge badge-secondary">{{ $log['status'] }}</span>
-                                        @endif
+                                                                        @if($log['status'] === 'allowed')
+                                    <span class="badge bg-success">✅ {{ trans('api-limiter::admin.logs.allowed') }}</span>
+                                @elseif($log['status'] === 'blocked')
+                                    <span class="badge bg-danger">❌ {{ trans('api-limiter::admin.logs.blocked') }}</span>
+                                @else
+                                    <span class="badge bg-secondary">{{ $log['status'] }}</span>
+                                @endif
                                     </td>
                                     <td>
                                         <code class="text-info">{{ $log['ip'] }}</code>
                                     </td>
                                     <td>
-                                        <span class="badge badge-{{ $log['method'] === 'GET' ? 'primary' : ($log['method'] === 'POST' ? 'success' : 'warning') }}">
+                                        <span class="badge bg-{{ $log['method'] === 'GET' ? 'primary' : ($log['method'] === 'POST' ? 'success' : 'warning') }}">
                                             {{ $log['method'] }}
                                         </span>
                                     </td>

@@ -1,4 +1,4 @@
-/* API Rate Limiter Admin Styles */
+/* API Rate Limiter Admin Styles - Theme Compatible */
 
 .api-rate-limiter-settings {
     max-width: 100%;
@@ -10,14 +10,20 @@
 }
 
 .api-rate-limiter-help {
-    background-color: #f8f9fa;
-    border-left: 4px solid #007bff;
+    background-color: var(--bs-light);
+    border-left: 4px solid var(--bs-primary);
     padding: 1rem;
     margin-top: 1rem;
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .api-rate-limiter-help {
+    background-color: var(--bs-dark);
+    border-left-color: var(--bs-primary);
 }
 
 .api-rate-limiter-help h6 {
-    color: #007bff;
+    color: var(--bs-primary);
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
@@ -53,19 +59,25 @@
 }
 
 .whitelist-preview {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: var(--bs-light);
+    border: 1px solid var(--bs-border-color);
     border-radius: 0.375rem;
     padding: 0.75rem;
     margin-top: 0.5rem;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     font-size: 0.875rem;
-    color: #495057;
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .whitelist-preview {
+    background-color: var(--bs-dark);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
 }
 
 .form-check-input:checked {
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: var(--bs-success);
+    border-color: var(--bs-success);
 }
 
 .btn-clear-limits {
@@ -92,27 +104,33 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #28a745;
+    background-color: var(--bs-success);
     animation: pulse 2s infinite;
 }
 
 .rate-limit-status.disabled .status-indicator {
-    background-color: #dc3545;
+    background-color: var(--bs-danger);
     animation: none;
 }
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+        box-shadow: 0 0 0 0 rgba(var(--bs-success-rgb), 0.7);
     }
     70% {
-        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+        box-shadow: 0 0 0 10px rgba(var(--bs-success-rgb), 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        box-shadow: 0 0 0 0 rgba(var(--bs-success-rgb), 0);
     }
 }
 
+.card {
+    box-shadow: 0 0 .1rem 0 rgb(0 0 0);
+}
+.card shadow mb-4 {
+    box-shadow: 0 0 .1rem 0 rgb(0 0 0);
+}
 .card-header .card-title {
     margin-bottom: 0;
     display: flex;
@@ -126,16 +144,16 @@
 
 .form-label {
     font-weight: 600;
-    color: #495057;
+    color: var(--bs-body-color);
 }
 
 .form-text {
-    color: #6c757d;
+    color: var(--bs-secondary-color);
     font-size: 0.875rem;
 }
 
 .settings-section {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--bs-border-color);
     padding-bottom: 1.5rem;
     margin-bottom: 1.5rem;
 }
@@ -147,13 +165,85 @@
 }
 
 .alert-rate-limit {
-    background-color: #fff3cd;
-    border-color: #ffecb5;
-    color: #856404;
+    background-color: var(--bs-warning-bg-subtle);
+    border-color: var(--bs-warning-border-subtle);
+    color: var(--bs-warning-text-emphasis);
 }
 
 .alert-rate-limit .alert-heading {
-    color: #856404;
+    color: var(--bs-warning-text-emphasis);
+}
+
+/* Theme-specific badge colors */
+.badge-theme-compatible {
+    background-color: var(--bs-purple, #6f42c1);
+    color: white;
+}
+
+[data-bs-theme="dark"] .badge-theme-compatible {
+    background-color: var(--bs-purple, #8a63d2);
+    color: white;
+}
+
+/* Custom rule styling improvements */
+.custom-rule {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .custom-rule {
+    background-color: var(--bs-dark);
+    border-color: var(--bs-border-color);
+}
+
+/* Table improvements for theme compatibility */
+.table {
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-bg: var(--bs-body-bg);
+}
+
+/* Code elements theme compatibility */
+code {
+    color: var(--bs-code-color, var(--bs-body-color));
+    background-color: var(--bs-light);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+[data-bs-theme="dark"] code {
+    background-color: var(--bs-dark);
+    color: var(--bs-body-color);
+}
+
+/* Modal theme compatibility */
+.modal-content {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+/* Badge improvements for dark theme */
+.badge.bg-light {
+    color: var(--bs-dark) !important;
+}
+
+[data-bs-theme="dark"] .badge.bg-light {
+    background-color: var(--bs-gray-300) !important;
+    color: var(--bs-dark) !important;
+}
+
+[data-bs-theme="dark"] .badge.text-dark {
+    color: var(--bs-dark) !important;
+}
+
+/* Ensure good contrast for code elements in badges */
+[data-bs-theme="dark"] .badge code {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+}
+
+/* Improve text-muted visibility in dark theme */
+[data-bs-theme="dark"] .text-muted {
+    color: var(--bs-gray-400) !important;
 }
 
 /* Responsive adjustments */

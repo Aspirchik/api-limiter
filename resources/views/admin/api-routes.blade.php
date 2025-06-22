@@ -2,6 +2,10 @@
 
 @section('title', trans('api-limiter::admin.api_routes'))
 
+@push('styles')
+    <link href="{{ plugin_asset('api-limiter', 'css/admin.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -108,7 +112,7 @@
                                     @endphp
                                     @foreach ($methods as $method)
                                         @if ($method !== 'HEAD')
-                                            <span class="badge badge-{{ $methodColors[$method] ?? 'secondary' }} badge-sm">{{ $method }}</span>
+                                            <span class="badge bg-{{ $methodColors[$method] ?? 'secondary' }} badge-sm">{{ $method }}</span>
                                         @endif
                                     @endforeach
                                 </td>
@@ -120,11 +124,11 @@
                                 </td>
                                 <td>
                                     @if ($route['source']['type'] === 'core')
-                                        <span class="badge badge-success">{{ $route['source']['display'] }}</span>
+                                        <span class="badge bg-success">{{ $route['source']['display'] }}</span>
                                     @elseif ($route['source']['type'] === 'plugin')
-                                        <span class="badge badge-info">{{ $route['source']['display'] }}</span>
+                                        <span class="badge bg-info">{{ $route['source']['display'] }}</span>
                                     @else
-                                        <span class="badge badge-secondary">{{ $route['source']['display'] }}</span>
+                                        <span class="badge bg-secondary">{{ $route['source']['display'] }}</span>
                                     @endif
                                 </td>
                                 <td>
@@ -137,15 +141,15 @@
                                     @endphp
                                     
                                     @if ($isAdminRoute)
-                                        <span class="badge badge-info" title="{{ trans('api-limiter::admin.tooltips.admin_protected') }}">🔐 Kernel</span>
+                                        <span class="badge bg-info" title="{{ trans('api-limiter::admin.tooltips.admin_protected') }}">🔐 Kernel</span>
                                     @elseif ($hasApiLimiter)
-                                        <span class="badge badge-success" title="{{ trans('api-limiter::admin.tooltips.api_limiter_active') }}">✅ AL</span>
+                                        <span class="badge bg-success" title="{{ trans('api-limiter::admin.tooltips.api_limiter_active') }}">✅ AL</span>
                                     @else
-                                        <span class="badge badge-warning" title="{{ trans('api-limiter::admin.tooltips.api_limiter_inactive') }}">⚠️ No AL</span>
+                                        <span class="badge bg-warning" title="{{ trans('api-limiter::admin.tooltips.api_limiter_inactive') }}">⚠️ No AL</span>
                                     @endif
                                     
                                     @if (count($route['middleware']) > 1)
-                                        <span class="badge badge-secondary" title="{{ trans('api-limiter::admin.tooltips.middleware_count') }}">{{ count($route['middleware']) }}</span>
+                                        <span class="badge bg-secondary" title="{{ trans('api-limiter::admin.tooltips.middleware_count') }}">{{ count($route['middleware']) }}</span>
                                     @endif
                                 </td>
                                 <td>
@@ -154,19 +158,19 @@
                                     @else
                                         @php $ruleInfo = $route['rule_info'] ?? null; @endphp
                                         @if ($ruleInfo)
-                                            <span class="badge badge-light {{ $ruleInfo['class'] }}" title="{{ $ruleInfo['text'] }}">
+                                            <span class="badge bg-light text-dark {{ $ruleInfo['class'] }}" title="{{ $ruleInfo['text'] }}">
                                                 {{ $ruleInfo['icon'] }} {{ $ruleInfo['text'] }}
                                             </span>
                                         @else
-                                            <span class="badge badge-secondary">📋 Default</span>
+                                            <span class="badge bg-secondary">📋 Default</span>
                                         @endif
                                     @endif
                                 </td>
                                 <td>
                                     @if ($isAdminRoute)
-                                        <span class="badge badge-warning">🔐 Admin</span>
+                                        <span class="badge bg-warning">🔐 Admin</span>
                                     @else
-                                        <span class="badge badge-success">🌐 Public</span>
+                                        <span class="badge bg-success">🌐 Public</span>
                                     @endif
                                 </td>
                             </tr>
@@ -257,10 +261,22 @@
             <div class="alert alert-info">
                 <strong>{{ trans('api-limiter::admin.coverage.status_explanation') }}:</strong>
                 <ul class="mb-0">
-                    <li><span class="badge badge-success">✅ AL</span> - {{ trans('api-limiter::admin.coverage.al_active') }}</li>
-                    <li><span class="badge badge-warning">⚠️ No AL</span> - {{ trans('api-limiter::admin.coverage.al_inactive') }}</li>
-                    <li><span class="badge badge-success">Public</span> - {{ trans('api-limiter::admin.coverage.public_route') }}</li>
-                    <li><span class="badge badge-warning">Admin</span> - {{ trans('api-limiter::admin.coverage.admin_route') }}</li>
+                    <li><span class="badge bg-success">✅ AL</span> - {{ trans('api-limiter::admin.coverage.al_active') }}</li>
+                    <li><span class="badge bg-warning">⚠️ No AL</span> - {{ trans('api-limiter::admin.coverage.al_inactive') }}</li>
+                    <li><span class="badge bg-success">Public</span> - {{ trans('api-limiter::admin.coverage.public_route') }}</li>
+                    <li><span class="badge bg-warning">Admin</span> - {{ trans('api-limiter::admin.coverage.admin_route') }}</li>
+                </ul>
+                <strong>{{ trans('api-limiter::admin.custom_fields.rule_descriptions') }}:</strong>
+                <ul class="mb-1">
+                    <li><span class="badge bg-success">✅ No Restrictions</span> - {{ trans('api-limiter::admin.rule_descriptions.no_restrictions') }}</li>
+                    <li><span class="badge bg-primary">🚦 Rate Limiting</span> - {{ trans('api-limiter::admin.rule_descriptions.rate_limiting') }}</li>
+                    <li><span class="badge bg-info">🚦 RL Custom</span> - {{ trans('api-limiter::admin.rule_descriptions.rate_limiting_custom') }}</li>
+                    <li><span class="badge bg-warning">🔒 Whitelist Only</span> - {{ trans('api-limiter::admin.rule_descriptions.whitelist_only') }}</li>
+                    <li><span class="badge bg-secondary">🔒 Whitelist (Custom)</span> - {{ trans('api-limiter::admin.rule_descriptions.whitelist_custom') }}</li>
+                    <li><span class="badge bg-dark">🚦🔒 RL + W</span> - {{ trans('api-limiter::admin.rule_descriptions.rate_limiting_whitelist') }}</li>
+                    <li><span class="badge badge-theme-compatible">🚦🔒 RL + W Custom</span> - {{ trans('api-limiter::admin.rule_descriptions.rate_limiting_whitelist_custom') }}</li>
+                    <li><span class="badge bg-info">🔒🚦 W + RL (Custom)</span> - {{ trans('api-limiter::admin.rule_descriptions.whitelist_rate_limiting_custom') }}</li>
+                    <li><span class="badge bg-danger">🚫 Restricted</span> - {{ trans('api-limiter::admin.rule_descriptions.restricted') }}</li>
                 </ul>
                 <div class="mt-2">
                     <small class="text-muted">

@@ -212,7 +212,7 @@ return [
         'admin_routes' => 'Admin Routes',
         'protected_routes' => 'Protected by API Limiter',
         'protection_coverage' => 'Protection Coverage',
-        'status_explanation' => 'Status Explanation',
+        'status_explanation' => 'Status Explanation Middleware',
         'al_active' => 'API Limiter is active for this route (via api group or explicitly)',
         'al_inactive' => 'API Limiter is disabled or rule is "no_restrictions"',
         'public_route' => 'Public API route (accessible to all users)',

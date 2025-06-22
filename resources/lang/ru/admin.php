@@ -212,7 +212,7 @@ return [
         'admin_routes' => 'Админ роуты',
         'protected_routes' => 'Защищены API Limiter',
         'protection_coverage' => 'Покрытие защитой',
-        'status_explanation' => 'Объяснение статусов',
+        'status_explanation' => 'Объяснение статусов Middleware',
         'al_active' => 'API Limiter активен для этого роута (через группу api или явно)',
         'al_inactive' => 'API Limiter отключен или правило "no_restrictions"',
         'public_route' => 'Публичный API роут (доступен всем пользователям)',
