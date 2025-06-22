@@ -3,11 +3,50 @@
 namespace Azuriom\Plugin\ApiLimiter\Middleware;
 
 use Azuriom\Plugin\ApiLimiter\Models\LimiterSetting;
+use Azuriom\Plugin\ApiLimiter\Support\LogCleaner;
 use Illuminate\Http\Request;
 use Closure;
 
 class ApiLimiter
 {
+    /**
+     * Log cleaner instance.
+     *
+     * @var LogCleaner|null
+     */
+    protected $logCleaner = null;
+
+    /**
+     * Get log cleaner instance.
+     *
+     * @return LogCleaner
+     */
+    protected function getLogCleaner(): LogCleaner
+    {
+        if ($this->logCleaner === null) {
+            $this->logCleaner = new LogCleaner();
+        }
+        return $this->logCleaner;
+    }
+
+    /**
+     * Log API request with automatic cleanup.
+     *
+     * @param array $data
+     * @return void
+     */
+    protected function logApiRequest(array $data): void
+    {
+        try {
+            // Clean logs periodically when adding new entries
+            $this->getLogCleaner()->cleanOnNewEntry();
+        } catch (\Exception $e) {
+            // Don't break the request if cleanup fails
+        }
+        
+        \Log::channel('api-limiter')->info('API Request', $data);
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -41,7 +80,7 @@ class ApiLimiter
         
         if (!$enabled) {
             if ($loggingEnabled) {
-                \Log::channel('api-limiter')->info('API Request', [
+                $this->logApiRequest([
                     'ip' => $request->ip(),
                     'method' => $request->method(),
                     'route' => $request->route() ? $request->route()->getName() : 'unknown',
@@ -62,7 +101,7 @@ class ApiLimiter
         // If no restrictions, pass through immediately
         if ($ruleType === 'no_restrictions') {
             if ($loggingEnabled) {
-                \Log::channel('api-limiter')->info('API Request', [
+                $this->logApiRequest([
                     'ip' => $request->ip(),
                     'method' => $request->method(),
                     'route' => $currentRoute ?: 'unknown',
@@ -88,7 +127,7 @@ class ApiLimiter
                 $status = 'blocked';
                 $reason = 'restricted';
                 if ($loggingEnabled) {
-                    \Log::channel('api-limiter')->info('API Request', [
+                    $this->logApiRequest([
                         'ip' => $request->ip(),
                         'method' => $request->method(),
                         'route' => $currentRoute ?: 'unknown',
@@ -104,7 +143,7 @@ class ApiLimiter
                     $status = 'blocked';
                     $reason = 'not_in_whitelist';
                     if ($loggingEnabled) {
-                        \Log::channel('api-limiter')->info('API Request', [
+                        $this->logApiRequest([
                             'ip' => $request->ip(),
                             'method' => $request->method(),
                             'route' => $currentRoute ?: 'unknown',
@@ -117,7 +156,7 @@ class ApiLimiter
                 }
                 $reason = 'whitelisted';
                 if ($loggingEnabled) {
-                    \Log::channel('api-limiter')->info('API Request', [
+                    $this->logApiRequest([
                         'ip' => $request->ip(),
                         'method' => $request->method(),
                         'route' => $currentRoute ?: 'unknown',
@@ -133,7 +172,7 @@ class ApiLimiter
                     $status = 'blocked';
                     $reason = 'not_in_custom_whitelist';
                     if ($loggingEnabled) {
-                        \Log::channel('api-limiter')->info('API Request', [
+                        $this->logApiRequest([
                             'ip' => $request->ip(),
                             'method' => $request->method(),
                             'route' => $currentRoute ?: 'unknown',
@@ -146,7 +185,7 @@ class ApiLimiter
                 }
                 $reason = 'custom_whitelisted';
                 if ($loggingEnabled) {
-                    \Log::channel('api-limiter')->info('API Request', [
+                    $this->logApiRequest([
                         'ip' => $request->ip(),
                         'method' => $request->method(),
                         'route' => $currentRoute ?: 'unknown',
@@ -198,7 +237,7 @@ class ApiLimiter
                 if ($isGeneralWhitelisted) {
                     $reason = 'whitelisted';
                     if ($loggingEnabled) {
-                        \Log::channel('api-limiter')->info('API Request', [
+                        $this->logApiRequest([
                             'ip' => $request->ip(),
                             'method' => $request->method(),
                             'route' => $currentRoute ?: 'unknown',
@@ -223,7 +262,7 @@ class ApiLimiter
                 if ($isCustomWhitelisted) {
                     $reason = 'custom_whitelisted';
                     if ($loggingEnabled) {
-                        \Log::channel('api-limiter')->info('API Request', [
+                        $this->logApiRequest([
                             'ip' => $request->ip(),
                             'method' => $request->method(),
                             'route' => $currentRoute ?: 'unknown',
@@ -247,7 +286,7 @@ class ApiLimiter
                 // Only whitelisted IPs are allowed, but with rate limiting
                 if (!$isCustomWhitelisted) {
                     if ($loggingEnabled) {
-                        \Log::channel('api-limiter')->info('API Request', [
+                        $this->logApiRequest([
                             'ip' => $request->ip(),
                             'method' => $request->method(),
                             'route' => $currentRoute ?: 'unknown',
@@ -279,7 +318,7 @@ class ApiLimiter
         }
         
         if ($loggingEnabled) {
-            \Log::channel('api-limiter')->info('API Request', [
+            $this->logApiRequest([
                 'ip' => $request->ip(),
                 'method' => $request->method(),
                 'route' => $currentRoute ?: 'unknown',
@@ -355,7 +394,7 @@ class ApiLimiter
         
         if ($currentAttempts >= $maxAttempts) {
             if ($loggingEnabled) {
-                \Log::channel('api-limiter')->info('API Request', [
+                $this->logApiRequest([
                     'ip' => $request->ip(),
                     'method' => $request->method(),
                     'route' => $currentRoute ?: 'unknown',

@@ -276,10 +276,9 @@ class ApiLimiterServiceProvider extends BasePluginServiceProvider
     {
         config([
             'logging.channels.api-limiter' => [
-                'driver' => 'daily',
-                'path' => storage_path('logs/api-limiter.log'),
+                'driver' => 'single',
+                'path' => storage_path('logs/api-limiter-logs.log'),
                 'level' => 'info',
-                'days' => 14,
                 'replace_placeholders' => true,
                 'tap' => [\Azuriom\Plugin\ApiLimiter\Logging\MillisecondsFormatter::class],
             ]

@@ -182,9 +182,9 @@
                                         <div class="col-md-2">
                                             <div class="d-flex flex-column">
                                                 <label class="form-label invisible" aria-hidden="true">&nbsp;</label>
-                                                <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRule(this)">
-                                                    🗑️ {{ trans('api-limiter::admin.buttons.remove') }}
-                                                </button>
+                                            <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRule(this)">
+                                                🗑️ {{ trans('api-limiter::admin.buttons.remove') }}
+                                            </button>
                                             </div>
                                         </div>
                                     </div>
@@ -471,9 +471,9 @@
                         <div class="col-md-2">
                             <div class="d-flex flex-column">
                                 <label class="form-label invisible" aria-hidden="true">&nbsp;</label>
-                                <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRule(this)">
-                                    🗑️ {{ trans('api-limiter::admin.buttons.remove') }}
-                                </button>
+                            <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRule(this)">
+                                🗑️ {{ trans('api-limiter::admin.buttons.remove') }}
+                            </button>
                             </div>
                         </div>
                     </div>

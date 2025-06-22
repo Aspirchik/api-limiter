@@ -249,6 +249,9 @@ return [
         'download' => 'Download',
         'clear' => 'Clear',
         'clear_confirm' => 'Are you sure you want to clear all logs?',
+        'cleanup' => 'Cleanup Old Logs',
+        'cleanup_confirm' => 'Are you sure you want to cleanup old log entries based on the auto-cleanup period?',
+        'cleanup_success' => 'Log cleanup completed: :deleted entries deleted, :space_freed freed (period: :period)',
         'datetime' => 'Date/Time',
         'message' => 'Message',
         'context' => 'Context',
@@ -271,6 +274,7 @@ return [
         'logging_settings' => 'Logging settings',
         'logging_enabled' => 'Logging enabled',
         'auto_cleanup' => 'Auto cleanup logs',
+        'auto_cleanup_help' => 'Automatically removes log entries older than the specified period. Cleanup runs during API requests (20% chance) or when manually triggered.',
         'cleanup_periods' => [
             '15_min' => '15 minutes',
             '30_min' => '30 minutes', 

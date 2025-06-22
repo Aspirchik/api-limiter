@@ -17,6 +17,12 @@
                     <a href="{{ route('api-limiter.admin.logs.download') }}" class="btn btn-success btn-sm">
                         📥 {{ trans('api-limiter::admin.logs.download') }}
                     </a>
+                    <form method="POST" action="{{ route('api-limiter.admin.logs.cleanup') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('{{ trans('api-limiter::admin.logs.cleanup_confirm') }}')">
+                            🧹 {{ trans('api-limiter::admin.logs.cleanup') }}
+                        </button>
+                    </form>
                     <form method="POST" action="{{ route('api-limiter.admin.logs.clear') }}" style="display: inline;">
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ trans('api-limiter::admin.logs.clear_confirm') }}')">
@@ -33,7 +39,7 @@
             <div class="alert alert-info">
                 <form method="POST" action="{{ route('api-limiter.admin.logs.settings') }}" class="row align-items-end">
                     @csrf
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="margin-bottom: auto;">
                         <label class="form-label">{{ trans('api-limiter::admin.logs.logging_enabled') }}:</label>
                         <select name="logging_enabled" class="form-control">
                             <option value="1" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('logging_enabled', true) ? 'selected' : '' }}>✅ {{ trans('api-limiter::admin.logs.enabled') }}</option>
@@ -56,6 +62,7 @@
                             <option value="6_months" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '6_months' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.6_months') }}</option>
                             <option value="1_year" {{ \Azuriom\Plugin\ApiLimiter\Models\LimiterSetting::getValue('auto_cleanup_logs', '1_week') === '1_year' ? 'selected' : '' }}>{{ trans('api-limiter::admin.logs.cleanup_periods.1_year') }}</option>
                         </select>
+                        <small class="form-text text-muted">{{ trans('api-limiter::admin.logs.auto_cleanup_help') }}</small>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary btn-sm">💾 {{ trans('api-limiter::admin.buttons.save') }}</button>

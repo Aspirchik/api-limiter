@@ -243,21 +243,21 @@ class LimiterController extends Controller
                 
                 // For custom rules, always create array with parameters
                 if (str_contains($ruleType, '_custom')) {
-                    $ruleData = [
+                $ruleData = [
                         'type' => $ruleType
-                    ];
-                    
+                ];
+                
                     // Add parameters for rate limiting custom rules
                     if (in_array($ruleType, ['rate_limit_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
                         // Only add if values are provided and valid
                         if (isset($customRule['max_attempts']) && is_numeric($customRule['max_attempts'])) {
-                            $ruleData['max_attempts'] = (int) $customRule['max_attempts'];
-                        }
-                        if (isset($customRule['per_minutes']) && is_numeric($customRule['per_minutes'])) {
-                            $ruleData['per_minutes'] = (int) $customRule['per_minutes'];
-                        }
+                        $ruleData['max_attempts'] = (int) $customRule['max_attempts'];
                     }
-                    
+                        if (isset($customRule['per_minutes']) && is_numeric($customRule['per_minutes'])) {
+                        $ruleData['per_minutes'] = (int) $customRule['per_minutes'];
+                    }
+                }
+                
                     // Add parameters for whitelist custom rules
                     if (in_array($ruleType, ['whitelist_custom', 'rate_limit_whitelist_custom', 'whitelist_rate_limit_custom'])) {
                         // Only add if value is provided and not empty
