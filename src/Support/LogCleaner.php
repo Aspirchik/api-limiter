@@ -53,39 +53,38 @@ class LogCleaner
 
             $originalSize = File::size($this->logFile);
             $content = File::get($this->logFile);
-            $lines = explode("\n", $content);
             
-            $keptLines = [];
+            // Find all log entries by timestamp pattern
+            $pattern = '/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]\s+\w+\.\w+:\s+API Request\s+\{[^}]*\}/';
+            $keptEntries = [];
             $deletedCount = 0;
 
-            foreach ($lines as $line) {
-                if (empty(trim($line))) {
-                    continue;
-                }
-
-                // Extract timestamp from log line (format: [2025-01-21 18:13:22.902])
-                if (preg_match('/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]/', $line, $matches)) {
+            if (preg_match_all($pattern, $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+                foreach ($matches as $match) {
+                    $timestamp = $match[1][0];
+                    $fullMatch = $match[0][0];
+                    
                     try {
-                        $logDate = Carbon::createFromFormat('Y-m-d H:i:s.v', $matches[1]);
+                        $logDate = Carbon::createFromFormat('Y-m-d H:i:s.v', $timestamp);
                         
-                        // Keep line if it's newer than cutoff date
+                        // Keep entry if it's newer than cutoff date
                         if ($logDate->gte($cutoffDate)) {
-                            $keptLines[] = $line;
+                            $keptEntries[] = $fullMatch;
                         } else {
                             $deletedCount++;
                         }
                     } catch (\Exception $e) {
-                        // If we can't parse the date, keep the line to be safe
-                        $keptLines[] = $line;
+                        // If we can't parse the date, keep the entry to be safe
+                        $keptEntries[] = $fullMatch;
                     }
-                } else {
-                    // If no timestamp found, keep the line (might be continuation of previous log)
-                    $keptLines[] = $line;
                 }
+            } else {
+                // No matches found, keep original content
+                $keptEntries[] = $content;
             }
 
             // Write cleaned content back to file
-            $newContent = implode("\n", $keptLines);
+            $newContent = implode("\n", $keptEntries);
             File::put($this->logFile, $newContent);
             
             $newSize = File::size($this->logFile);

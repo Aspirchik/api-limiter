@@ -223,18 +223,15 @@ class LogController extends Controller
         try {
             $content = File::get($logFile);
             
-            // Handle multiline logs - normalize content by joining broken lines
-            $normalizedContent = preg_replace('/\n(?!\[)/', ' ', $content);
-            $lines = explode("\n", $normalizedContent);
+            // Find all timestamp positions - look for the complete pattern
+            $pattern = '/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]\s+\w+\.(\w+):\s+API Request\s+(\{[^}]*\})/';
             
-            foreach ($lines as $line) {
-                if (empty(trim($line))) {
-                    continue;
-                }
-                
-                $log = $this->parseLogLine(trim($line));
-                if ($log) {
-                    $logs[] = $log;
+            if (preg_match_all($pattern, $content, $matches, PREG_SET_ORDER)) {
+                foreach ($matches as $match) {
+                    $log = $this->parseLogMatch($match);
+                    if ($log) {
+                        $logs[] = $log;
+                    }
                 }
             }
             
@@ -254,24 +251,17 @@ class LogController extends Controller
     }
     
     /**
-     * Parse a single log line.
+     * Parse a log match from regex.
      *
-     * @param string $line
+     * @param array $match
      * @return array|null
      */
-    private function parseLogLine(string $line): ?array
+    private function parseLogMatch(array $match): ?array
     {
         try {
-            // Updated regex to handle production.INFO format and optional trailing []
-            // Format: [2025-06-22 07:19:35.413] production.INFO: API Request {"ip":"192.168.0.21",...} 
-            if (!preg_match('/\[([^\]]+)\]\s+\w+\.(\w+):\s+(API Request)\s+({[^}]+})\s*(?:\[\])?/', $line, $matches)) {
-                return null;
-            }
-            
-            $date = $matches[1];
-            $level = strtolower($matches[2]);
-            $message = trim($matches[3]);
-            $jsonData = $matches[4];
+            $date = $match[1];
+            $level = strtolower($match[2]);
+            $jsonData = $match[3];
             
             // Parse JSON data
             $data = json_decode($jsonData, true);
@@ -282,7 +272,7 @@ class LogController extends Controller
             return [
                 'date' => $date,
                 'level' => $level,
-                'message' => $message,
+                'message' => 'API Request',
                 'ip' => $data['ip'] ?? 'unknown',
                 'method' => $data['method'] ?? 'unknown',
                 'route' => $data['route'] ?? 'unknown',
